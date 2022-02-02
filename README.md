@@ -1,2 +1,2 @@
-# CSE330Project1
-Repository for CSE330 Project 1
+# CSE360Project1
+Repository for CSE360 Project 1
