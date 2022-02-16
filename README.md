@@ -5,3 +5,4 @@ Team Members:
 Clay Castronovo
 Tyler Allison
 Ethan Rivera
+William Hemminger
