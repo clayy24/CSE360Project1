@@ -22,9 +22,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			//testing commit
-			//hello
-			// shit
+			//testing committ
 			StackPane root = new StackPane();
 			Scene scene = new Scene(root,400,400);
 			Button button = new Button("Hello");
