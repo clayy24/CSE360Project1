@@ -22,6 +22,7 @@ public class Main extends Application {
 			root.getChildren().add(button);
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("This is a title.");
+			
 			primaryStage.show();
 		} catch(Exception e) {
 			e.printStackTrace();
