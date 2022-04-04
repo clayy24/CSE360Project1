@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 //import java.awt.Label;
 //import java.awt.TextField;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.FileWriter;
 import java.util.Scanner;
@@ -121,7 +122,16 @@ public class Main extends Application {
 			//login button
             button1.setOnAction(event -> {
                 
-            	switchScenes(scene3);
+            	if(checkAccount(UserName.getText(), Password.getText()))
+            	{
+            		System.out.println("Login successful");
+            		switchScenes(scene3);
+            	}
+            	else
+            	{
+            		System.out.println("Login unsuccessful");
+            	}
+            	
                 //vBox1.getChildren().add(
                 		//new Label("Yay"));
             });
@@ -244,6 +254,54 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
     	
+    }
+    
+    private boolean checkAccount(String username, String password)
+    {
+    	String accountUsername = "username: " + username;
+    	String accountPassword = "password: " + password;
+    	boolean accountExists = false;
+    	boolean loginSuccessful = false;
+    	
+    	File accounts = new File("accounts.txt");
+    	
+    	try {
+			Scanner scanner = new Scanner(accounts);
+			
+			while(scanner.hasNextLine())
+			{
+				String line = scanner.nextLine();
+				if(line.equals(accountUsername))
+				{
+					System.out.println("account exists.");
+					accountExists = true;
+					line = scanner.nextLine();
+					if(line.equals(accountPassword))
+					{
+						System.out.println("login successful");
+						loginSuccessful = true;
+					}
+					else
+					{
+						System.out.println("Incorrect password");
+					}
+				}
+			}
+			
+			if(accountExists && loginSuccessful)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	return false;
     }
     
 	private void switchScenes(Scene scene) {
