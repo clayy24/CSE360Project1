@@ -41,6 +41,9 @@ public class Main extends Application {
 	private VBox vBox3;
 	private Button button3;
 	
+	//scene4
+	private Scene scene4;
+	private VBox vBox4;
 	
     private Stage stage;
     
@@ -55,6 +58,7 @@ public class Main extends Application {
 		scene1 = createScene1();
 		scene2 = createScene2();
 		scene3 = createScene3();
+		scene4 = createScene4();
 		
 		stage.setScene(scene1);
 		
@@ -161,16 +165,38 @@ public class Main extends Application {
     //home screen
     private Scene createScene3() {
     	VBox vBox3 = new VBox();
+    	button3 = new Button("Menu");
     	
     	vBox3.setSpacing(8);
         vBox3.setPadding(new Insets(10,10,10,10));
         vBox3.setStyle("-fx-background-color: red");
+        vBox3.getChildren().add(button3);
         scene3 = new Scene(vBox3, 400, 400);
+        
+        button3.setOnAction(event -> {
+        	
+        	switchScenes(scene4);
+        });
         
     	return scene3;
     }
 
+    private Scene createScene4()
+    {
+    	VBox vBox4 = new VBox();
+    	
+    	vBox4.setSpacing(8);
+        vBox4.setPadding(new Insets(10,10,10,10));
+        vBox4.setStyle("-fx-background-color: blue");
+        vBox4.getChildren().add(new Label("item1"));
+        
+    	scene4 = new Scene(vBox4, 400, 400);
+    	
 
+    	
+    	return scene4;
+    }
+    
 	private void switchScenes(Scene scene) {
 		stage.setScene(scene);
 		
