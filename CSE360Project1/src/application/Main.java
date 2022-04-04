@@ -64,6 +64,7 @@ public class Main extends Application {
 		scene3 = createScene3();
 		scene4 = createScene4();
 		
+		
 		stage.setScene(scene1);
 		
 		stage.show();
@@ -230,7 +231,18 @@ public class Main extends Application {
     	
     	System.out.println("Username: " + username);
     	System.out.println("Password: " + password);
+    }
+    
+    private void clearAccounts()
+    {
+    	File accounts = new File("accounts.txt");
     	
+    	try {
+			FileWriter writer = new FileWriter(accounts);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	
     }
     
