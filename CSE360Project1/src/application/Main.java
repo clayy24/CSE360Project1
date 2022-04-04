@@ -6,6 +6,10 @@ import java.awt.event.ActionEvent;
 //import java.awt.Button;
 //import java.awt.Label;
 //import java.awt.TextField;
+import java.io.File;
+import java.io.IOException;
+import java.io.FileWriter;
+import java.util.Scanner;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -153,7 +157,7 @@ public class Main extends Application {
        
 	       //label called status
         button2.setOnAction(event -> {
-            
+            createAccount(NewUserName, NewPassword);
 			switchScenes(scene1);
             vBox2.getChildren().add(
             		new Label("Yay"));
@@ -195,6 +199,39 @@ public class Main extends Application {
 
     	
     	return scene4;
+    }
+    
+    private void createAccount(TextField NewUserName, PasswordField NewPassword)
+    {
+    	File accounts = new File("accounts.txt");
+    	FileWriter writer = null;
+		try {
+			writer = new FileWriter(accounts, true);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	
+    	String username = NewUserName.getText();
+    	String password = NewPassword.getText();
+    	
+    	
+    	try {
+			writer.append("username: " + username + "\n");
+			writer.append("password: " + password + "\n");			
+			writer.close();
+			System.out.println("successfully wrote to file");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	
+    	System.out.println("Username: " + username);
+    	System.out.println("Password: " + password);
+    	
+    	
     }
     
 	private void switchScenes(Scene scene) {
