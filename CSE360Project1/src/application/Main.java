@@ -1,6 +1,7 @@
 package application;
     
 
+import java.awt.List;
 import java.awt.event.ActionEvent;
 
 //import java.awt.Button;
@@ -12,8 +13,12 @@ import java.io.IOException;
 import java.io.FileWriter;
 import java.util.Scanner;
 
+import javax.swing.event.ChangeListener;
+
 import javafx.application.Application;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -47,13 +52,20 @@ public class Main extends Application {
 	private VBox vBox3;
 	private Button menuButton;
 	private Button cartButton;
+	private Button addItems;
 	
 	//scene4
 	private Scene scene4;
 	private VBox vBox4;
+	private Button goBack;
+	
+	//scene5 
 	
     private Stage stage;
-    
+    private Scene scene5;
+	private VBox vBox5;
+	private Button add;
+	
     Customer customer;
     
 
@@ -68,6 +80,7 @@ public class Main extends Application {
 		scene2 = createScene2();
 		scene3 = createScene3();
 		scene4 = createScene4();
+		scene5 = createScene5();
 		
 		
 		stage.setScene(scene1);
@@ -187,11 +200,12 @@ public class Main extends Application {
     	HBox hBox3 = new HBox();
     	menuButton = new Button("Menu");
     	cartButton = new Button("Cart");
+    	addItems = new Button("add Menu Items");
     	
     	hBox3.setSpacing(50);
         hBox3.setPadding(new Insets(10,10,10,10));
         hBox3.setStyle("-fx-background-color: red");
-        hBox3.getChildren().addAll(menuButton, cartButton);
+        hBox3.getChildren().addAll(menuButton, cartButton, addItems);
         //hBox3.getChildren().addAll(menuButton, cartButton);
         scene3 = new Scene(hBox3, 400, 400);
         
@@ -200,26 +214,182 @@ public class Main extends Application {
         	switchScenes(scene4);
         });
         
+        addItems.setOnAction(event -> {
+        	
+        	switchScenes(scene5);
+        });
+        
     	return scene3;
     }
 
     private Scene createScene4()
     {
     	VBox vBox4 = new VBox();
+    	goBack = new Button("Return");
     	
     	vBox4.setSpacing(8);
         vBox4.setPadding(new Insets(10,10,10,10));
         vBox4.setStyle("-fx-background-color: blue");
-        vBox4.getChildren().add(new Label("item1"));
+        vBox4.getChildren().addAll(goBack, Displayed());
         
     	scene4 = new Scene(vBox4, 400, 400);
     	
-
+    	goBack.setOnAction(event -> {
+        	
+        	switchScenes(scene3);
+        });
     	
     	return scene4;
     }
     
-    private void createAccount(TextField NewUserName, PasswordField NewPassword)
+    private Node Displayed() {
+		
+    	String itemName;
+    	String itemPrice;
+    	String allItems = "";
+    	
+    	
+    	File menu = new File("menu.txt");
+    	
+    	try {
+			Scanner scanner = new Scanner(menu);
+			
+			while(scanner.hasNextLine())
+			{
+				String line1 = scanner.nextLine();
+				String line2 = scanner.nextLine();
+				
+				allItems = allItems + line1 + " " + " $" +line2 + "\n";
+				
+				
+				
+			}
+			Label Item = returnLabel(allItems);
+			
+			
+			
+			return Item;
+		
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+    	
+    	
+
+	}
+	private Label returnLabel(String items) {
+		
+		
+		Label Item = new Label(items);
+		return Item;
+	}
+	private Scene createScene5() {
+    	VBox vBox5 = new VBox();
+    	
+    	vBox5.setSpacing(8);
+        vBox5.setPadding(new Insets(10,10,10,10));
+        vBox5.setStyle("-fx-background-color: grey");
+        scene5 = new Scene(vBox5, 400, 400);
+    	
+        TextField NewMenuItem;
+		TextField NewItemPrice;
+		String NumPrice;
+		
+		
+		Label CIntro;
+		CIntro = new Label("Add items to menu");
+		CIntro.setFont(new Font("Arial", 24));
+		CIntro.setMinWidth(50);
+		CIntro.setMinHeight(50);
+		vBox5.getChildren().addAll(
+				CIntro,
+                new Label("Enter item name"),
+                NewMenuItem = new TextField(),
+                new Label("Enter item price(number)"),
+                NewItemPrice = new TextField(),
+                add = new Button("Add this item"));
+			    
+       
+		NumPrice = NewItemPrice.getText();
+	       //label called status
+        add.setOnAction(event -> {
+        	
+        	/*
+    		try{
+    		    double d= Double.valueOf(NumPrice);
+    		    if (d==(int)d){
+    		        System.out.println("integer"+(int)d);
+    		        createMenuItem(NewMenuItem, NewItemPrice);
+    				switchScenes(scene3);
+    		    }else{
+    		        System.out.println("double"+d);
+    		        createMenuItem(NewMenuItem, NewItemPrice);
+    				switchScenes(scene3);
+    		    }
+    		}catch(Exception e){
+    		    System.out.println("not number");
+    		}
+    		*/
+        	
+        		createMenuItem(NewMenuItem, NewItemPrice);
+				switchScenes(scene3);
+        	
+            vBox5.getChildren().add(
+            		new Label("not number"));
+        });
+        
+        
+		return scene5;
+	}
+    
+    private void createMenuItem(TextField newMenuItem, TextField newItemPrice) {
+    	File menu = new File("menu.txt");
+    	FileWriter writer = null;
+		try {
+			writer = new FileWriter(menu, true);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	
+    	String Item = newMenuItem.getText();
+    	String Price = newItemPrice.getText();
+    	
+    	customer = new Customer(Item, Price);
+    	
+    	try {
+			writer.append("item: " + Item + "\n");
+			writer.append("price: " + Price + "\n");			
+			writer.close();
+			System.out.println("successfully wrote to file");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	
+    	System.out.println("item: " + Item);
+    	System.out.println("price: " + Price);
+		
+	}
+    
+    private void clearMenu()
+    {
+    	File menu = new File("menu.txt");
+    	
+    	try {
+			FileWriter writer = new FileWriter(menu);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    }
+    
+	private void createAccount(TextField NewUserName, PasswordField NewPassword)
     {
     	File accounts = new File("accounts.txt");
     	FileWriter writer = null;
@@ -321,4 +491,3 @@ public class Main extends Application {
         Application.launch(args);
     }
 }
-
