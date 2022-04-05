@@ -8,8 +8,10 @@ import java.awt.event.ActionEvent;
 //import java.awt.Label;
 //import java.awt.TextField;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.io.FileWriter;
 import java.util.Scanner;
 
@@ -25,6 +27,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -81,7 +84,6 @@ public class Main extends Application {
 		scene3 = createScene3();
 		scene4 = createScene4();
 		scene5 = createScene5();
-		
 		
 		stage.setScene(scene1);
 		
@@ -225,14 +227,22 @@ public class Main extends Application {
     private Scene createScene4()
     {
     	VBox vBox4 = new VBox();
+    	GridPane gridpane = new GridPane();
     	goBack = new Button("Return");
+    	Label label = new Label("test");
     	
+    	/*
     	vBox4.setSpacing(8);
         vBox4.setPadding(new Insets(10,10,10,10));
-        vBox4.setStyle("-fx-background-color: blue");
+        vBox4.setStyle("-fx-background-color: white");
         vBox4.getChildren().addAll(goBack, Displayed());
+        */
+    	
+    	gridpane = Displayed();
+    	gridpane.add(goBack, 0, 0);
         
-    	scene4 = new Scene(vBox4, 400, 400);
+    	
+    	scene4 = new Scene(gridpane, 400, 400);
     	
     	goBack.setOnAction(event -> {
         	
@@ -242,33 +252,55 @@ public class Main extends Application {
     	return scene4;
     }
     
-    private Node Displayed() {
+    private GridPane Displayed() {
 		
     	String itemName;
     	String itemPrice;
     	String allItems = "";
-    	
+    	GridPane gridpane = new GridPane();
     	
     	File menu = new File("menu.txt");
+    	int lines = 0;
     	
+
+        try (Scanner scanner = new Scanner(menu)) {
+            while (scanner.hasNextLine()) 
+            {
+            	scanner.nextLine();
+            	lines++;
+            }
+        	scanner.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    	
+        System.out.println(lines);
+        
     	try {
 			Scanner scanner = new Scanner(menu);
 			
-			while(scanner.hasNextLine())
+			for(int i = 0; i < lines/3; i++)
 			{
+
 				String line1 = scanner.nextLine();
 				String line2 = scanner.nextLine();
+				String line3 = scanner.nextLine();
 				
 				allItems = allItems + line1 + " " + " $" +line2 + "\n";
+				Label Item = returnLabel(allItems);
+				
+				FileInputStream inputStream = new FileInputStream(line3);
+				Image image = new Image(inputStream);
 				
 				
-				
+				gridpane.add(Item, 0, i+1, 1, 1);
+				gridpane.add(new ImageView(image), 1, i+1, 1, 1);
+				System.out.println("test");
 			}
-			Label Item = returnLabel(allItems);
 			
+			scanner.close();
 			
-			
-			return Item;
+			return gridpane;
 		
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -295,6 +327,7 @@ public class Main extends Application {
     	
         TextField NewMenuItem;
 		TextField NewItemPrice;
+		TextField newImagePath;
 		String NumPrice;
 		
 		
@@ -309,6 +342,8 @@ public class Main extends Application {
                 NewMenuItem = new TextField(),
                 new Label("Enter item price(number)"),
                 NewItemPrice = new TextField(),
+                new Label("Enter image path"),
+                newImagePath = new TextField(),
                 add = new Button("Add this item"));
 			    
        
@@ -333,7 +368,7 @@ public class Main extends Application {
     		}
     		*/
         	
-        		createMenuItem(NewMenuItem, NewItemPrice);
+        		createMenuItem(NewMenuItem, NewItemPrice, newImagePath);
 				switchScenes(scene3);
         	
             vBox5.getChildren().add(
@@ -344,7 +379,7 @@ public class Main extends Application {
 		return scene5;
 	}
     
-    private void createMenuItem(TextField newMenuItem, TextField newItemPrice) {
+    private void createMenuItem(TextField newMenuItem, TextField newItemPrice, TextField newImagePath) {
     	File menu = new File("menu.txt");
     	FileWriter writer = null;
 		try {
@@ -357,12 +392,14 @@ public class Main extends Application {
     	
     	String Item = newMenuItem.getText();
     	String Price = newItemPrice.getText();
+    	String imagepath = newImagePath.getText();
     	
     	customer = new Customer(Item, Price);
     	
     	try {
 			writer.append("item: " + Item + "\n");
-			writer.append("price: " + Price + "\n");			
+			writer.append("price: " + Price + "\n");
+			writer.append(imagepath + "\n");
 			writer.close();
 			System.out.println("successfully wrote to file");
 		} catch (IOException e) {
@@ -436,6 +473,7 @@ public class Main extends Application {
     
     private boolean checkAccount(String username, String password)
     {
+    	
     	String accountUsername = "username: " + username;
     	String accountPassword = "password: " + password;
     	boolean accountExists = false;

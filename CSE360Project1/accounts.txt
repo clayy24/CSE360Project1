@@ -2,3 +2,5 @@ username: michael cox
 password: 1234
 username: Tyler
 password: Allison
+username: admin
+password: 1234
