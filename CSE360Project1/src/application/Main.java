@@ -20,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -44,7 +45,8 @@ public class Main extends Application {
 	//scene3
 	private Scene scene3;
 	private VBox vBox3;
-	private Button button3;
+	private Button menuButton;
+	private Button cartButton;
 	
 	//scene4
 	private Scene scene4;
@@ -179,16 +181,19 @@ public class Main extends Application {
 	}
     //home screen
     private Scene createScene3() {
-    	VBox vBox3 = new VBox();
-    	button3 = new Button("Menu");
+    	//VBox vBox3 = new VBox();
+    	HBox hBox3 = new HBox();
+    	menuButton = new Button("Menu");
+    	cartButton = new Button("Cart");
     	
-    	vBox3.setSpacing(8);
-        vBox3.setPadding(new Insets(10,10,10,10));
-        vBox3.setStyle("-fx-background-color: red");
-        vBox3.getChildren().add(button3);
-        scene3 = new Scene(vBox3, 400, 400);
+    	hBox3.setSpacing(50);
+        hBox3.setPadding(new Insets(10,10,10,10));
+        hBox3.setStyle("-fx-background-color: red");
+        hBox3.getChildren().addAll(menuButton, cartButton);
+        //hBox3.getChildren().addAll(menuButton, cartButton);
+        scene3 = new Scene(hBox3, 400, 400);
         
-        button3.setOnAction(event -> {
+        menuButton.setOnAction(event -> {
         	
         	switchScenes(scene4);
         });
