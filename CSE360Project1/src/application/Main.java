@@ -286,7 +286,7 @@ public class Main extends Application {
 				String line2 = scanner.nextLine();
 				String line3 = scanner.nextLine();
 				
-				allItems = allItems + line1 + " " + " $" +line2 + "\n";
+				allItems = line1 + " " + " $" +line2 + "\n";
 				Label Item = returnLabel(allItems);
 				
 				FileInputStream inputStream = new FileInputStream(line3);
@@ -295,7 +295,6 @@ public class Main extends Application {
 				
 				gridpane.add(Item, 0, i+1, 1, 1);
 				gridpane.add(new ImageView(image), 1, i+1, 1, 1);
-				System.out.println("test");
 			}
 			
 			scanner.close();

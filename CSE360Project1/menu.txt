@@ -1,3 +1,6 @@
 item: apple
 price: 5
 apple.jpg
+item: watermelon
+price: 3
+watermelon.jpg
