@@ -258,6 +258,7 @@ public class Main extends Application {
     	String itemPrice;
     	String allItems = "";
     	GridPane gridpane = new GridPane();
+    	ImageView imageview = null;
     	
     	File menu = new File("menu.txt");
     	int lines = 0;
@@ -291,10 +292,13 @@ public class Main extends Application {
 				
 				FileInputStream inputStream = new FileInputStream(line3);
 				Image image = new Image(inputStream);
+				imageview = new ImageView(image);
+				imageview.setFitHeight(100);
+				imageview.setFitWidth(100);
+				imageview.setPreserveRatio(true);
 				
-				
-				gridpane.add(Item, 0, i+1, 1, 1);
-				gridpane.add(new ImageView(image), 1, i+1, 1, 1);
+				gridpane.add(Item, 0, i+1, 1, 1);			
+				gridpane.add(imageview, 1, i+1, 1, 1);
 			}
 			
 			scanner.close();
