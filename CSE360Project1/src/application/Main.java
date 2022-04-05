@@ -39,6 +39,7 @@ import javafx.scene.image.ImageView;
 
 public class Main extends Application {
 	
+	private Stage stage;
 	//scene1
 	private Scene scene1;
 	private VBox vBox1;
@@ -64,10 +65,18 @@ public class Main extends Application {
 	
 	//scene5 
 	
-    private Stage stage;
+    
     private Scene scene5;
 	private VBox vBox5;
 	private Button add;
+	
+
+	//scene6
+	
+	private Scene scene6;
+	private VBox vBox6;
+	private Button checkOut;
+	private Button backToMenu;
 	
     Customer customer;
     
@@ -84,6 +93,7 @@ public class Main extends Application {
 		scene3 = createScene3();
 		scene4 = createScene4();
 		scene5 = createScene5();
+		scene6 = createScene6();
 		
 		stage.setScene(scene1);
 		
@@ -220,6 +230,10 @@ public class Main extends Application {
         	
         	switchScenes(scene5);
         });
+        cartButton.setOnAction(event -> {
+        	
+        	switchScenes(scene6);
+        });
         
     	return scene3;
     }
@@ -258,7 +272,6 @@ public class Main extends Application {
     	String itemPrice;
     	String allItems = "";
     	GridPane gridpane = new GridPane();
-    	ImageView imageview = null;
     	
     	File menu = new File("menu.txt");
     	int lines = 0;
@@ -292,13 +305,10 @@ public class Main extends Application {
 				
 				FileInputStream inputStream = new FileInputStream(line3);
 				Image image = new Image(inputStream);
-				imageview = new ImageView(image);
-				imageview.setFitHeight(100);
-				imageview.setFitWidth(100);
-				imageview.setPreserveRatio(true);
 				
-				gridpane.add(Item, 0, i+1, 1, 1);			
-				gridpane.add(imageview, 1, i+1, 1, 1);
+				
+				gridpane.add(Item, 0, i+1, 1, 1);
+				gridpane.add(new ImageView(image), 1, i+1, 1, 1);
 			}
 			
 			scanner.close();
@@ -380,6 +390,27 @@ public class Main extends Application {
         
         
 		return scene5;
+	}
+	
+	private Scene createScene6() {
+		VBox vBox6 = new VBox();
+    	
+    	vBox6.setSpacing(8);
+        vBox6.setPadding(new Insets(10,10,10,10));
+        vBox6.setStyle("-fx-background-color: grey");
+        scene6 = new Scene(vBox6, 400, 400);
+        checkOut = new Button("Proceed to Checkout");
+        backToMenu = new Button("Return Shopping");
+        
+        vBox6.getChildren().addAll(checkOut,backToMenu);
+        
+        checkOut.setOnAction(event -> System.out.println("Not yet"));
+        backToMenu.setOnAction(event -> {
+        	
+        	switchScenes(scene3);
+        });
+        
+        return scene6;
 	}
     
     private void createMenuItem(TextField newMenuItem, TextField newItemPrice, TextField newImagePath) {
