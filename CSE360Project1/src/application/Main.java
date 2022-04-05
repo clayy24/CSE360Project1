@@ -25,6 +25,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -74,7 +75,7 @@ public class Main extends Application {
 
 	@Override
     public void start(Stage primaryStage) {
-		
+		ScrollPane scrollpane = new ScrollPane();
 		
 		stage = primaryStage;
 		stage.setTitle("Login screen that switches to create acoount");
@@ -86,7 +87,6 @@ public class Main extends Application {
 		scene5 = createScene5();
 		
 		stage.setScene(scene1);
-		
 		stage.show();
 		
         primaryStage.setScene(scene1);;
@@ -230,6 +230,7 @@ public class Main extends Application {
     	GridPane gridpane = new GridPane();
     	goBack = new Button("Return");
     	Label label = new Label("test");
+    	Button addCart;
     	
     	/*
     	vBox4.setSpacing(8);
@@ -240,7 +241,7 @@ public class Main extends Application {
     	
     	gridpane = Displayed();
     	gridpane.add(goBack, 0, 0);
-        
+    	
     	
     	scene4 = new Scene(gridpane, 400, 400);
     	
@@ -259,6 +260,7 @@ public class Main extends Application {
     	String allItems = "";
     	GridPane gridpane = new GridPane();
     	ImageView imageview = null;
+    	Button addCart = null;
     	
     	File menu = new File("menu.txt");
     	int lines = 0;
@@ -296,12 +298,20 @@ public class Main extends Application {
 				imageview.setFitHeight(100);
 				imageview.setFitWidth(100);
 				imageview.setPreserveRatio(true);
+				addCart = new Button("Add to cart");
 				
 				gridpane.add(Item, 0, i+1, 1, 1);			
 				gridpane.add(imageview, 1, i+1, 1, 1);
+				gridpane.add(addCart, 3, i+1);
+				
+				addCart.setOnAction(event ->
+				{
+					System.out.println("it works");
+				});
 			}
 			
 			scanner.close();
+			
 			
 			return gridpane;
 		
