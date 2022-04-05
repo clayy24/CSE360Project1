@@ -54,6 +54,8 @@ public class Main extends Application {
 	
     private Stage stage;
     
+    Customer customer;
+    
 
 	@Override
     public void start(Stage primaryStage) {
@@ -232,6 +234,7 @@ public class Main extends Application {
     	String username = NewUserName.getText();
     	String password = NewPassword.getText();
     	
+    	customer = new Customer(username, password);
     	
     	try {
 			writer.append("username: " + username + "\n");
