@@ -2,3 +2,7 @@ item: Apple
 price: 4.99
 item: CreamSoda
 price: 5.99
+item: watermelon
+price: 3.99
+item: watermelon
+price: 3.99
