@@ -315,6 +315,7 @@ public class Main extends Application {
 				addCart.setOnAction(event ->
 				{
 					addItemToCart(line1, line2, line3);
+					cartScene = createCartScene();
 				});
 			}
 			
@@ -418,6 +419,8 @@ public class Main extends Application {
     	gridpane.add(clearCartButton, 1, 0);
     	gridpane.add(checkoutButton, 2, 0);
     	
+    	gridpane.getChildren().removeIf(node -> GridPane.getColumnIndex(node) == 3);
+    	
     	cartScene = new Scene(gridpane, 400, 400);
     	
     	goBack.setOnAction(event -> {
@@ -428,6 +431,7 @@ public class Main extends Application {
     	clearCartButton.setOnAction(event ->
     	{
     		clearCart();
+    		cartScene = createCartScene();
     	});
     	
     	checkoutButton.setOnAction(event ->
@@ -440,21 +444,34 @@ public class Main extends Application {
 	
 	private Scene createCheckoutScene()
 	{
+		GridPane gridpane = new GridPane();
+		Button goBack = new Button("Go back");
 		VBox vbox = new VBox();
 		HBox hboxFirstname = new HBox();
 		HBox hboxLastname = new HBox();
 		
+		gridpane = Displayed("cart.txt");
+		gridpane.getChildren().removeIf(node -> GridPane.getColumnIndex(node) == 3);
+		
 		Label firstname = new Label("Enter first name: ");
 		Label lastname = new Label("Enter last name: ");
+		Label cardnum = new Label("Enter card number");
 		TextField newfirstname = new TextField();
 		TextField newlastname = new TextField();
+		TextField newcardnum = new TextField();
 		
 		hboxFirstname.getChildren().addAll(firstname, newfirstname);
 		hboxLastname.getChildren().addAll(lastname, newlastname);
 		
-		vbox.getChildren().addAll(hboxFirstname, hboxLastname);
+		vbox.getChildren().addAll(goBack, gridpane, hboxFirstname, hboxLastname);
 		
 		checkoutScene = new Scene(vbox, 400, 400);
+		
+		goBack.setOnAction(event ->
+		{
+			switchScenes(cartScene);
+		});
+		
 		return checkoutScene;
 	}
     
