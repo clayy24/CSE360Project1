@@ -83,6 +83,10 @@ public class Main extends Application {
 	private int customersAhead = -1;
 	private int minutes = 0;
 	
+	String currentUser = "";
+	
+	double discount = 1;
+	
     Customer customer;
     
 
@@ -801,6 +805,7 @@ public class Main extends Application {
 					{
 						System.out.println("login successful");
 						loginSuccessful = true;
+						this.currentUser = username;
 						this.firstname = scanner.nextLine();
 						this.lastname = scanner.nextLine();
 						this.cardnum = scanner.nextLine();
@@ -829,6 +834,29 @@ public class Main extends Application {
     	return false;
     }
     
+    private double applyDiscount()
+    {
+    	File discountFile = new File("discount.txt");
+    	try {
+			Scanner scanner = new Scanner(discountFile);
+			
+			while(scanner.hasNextLine()) 
+			{
+				String line = scanner.nextLine();
+				
+				if(line.contains(currentUser))
+				{
+					discount = Double.parseDouble(scanner.nextLine());
+				}
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	return discount;
+    }
+    
 	private void switchScenes(Scene scene) {
 		stage.setScene(scene);
 		
@@ -837,4 +865,5 @@ public class Main extends Application {
 	public static void main(String[] args) {
         Application.launch(args);
     }
+	
 }
