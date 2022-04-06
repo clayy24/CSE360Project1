@@ -434,6 +434,7 @@ public class Main extends Application {
     		clearCart();
     		cartScene = createCartScene();
     		checkoutScene = createCheckoutScene();
+    		switchScenes(cartScene);
     	});
     	
     	checkoutButton.setOnAction(event ->
