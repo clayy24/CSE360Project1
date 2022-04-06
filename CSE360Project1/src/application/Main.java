@@ -340,6 +340,7 @@ public class Main extends Application {
 	}
 	private Scene createScene5() {
     	VBox vBox5 = new VBox();
+    	Button goBack = new Button("Go back");
     	
     	vBox5.setSpacing(8);
         vBox5.setPadding(new Insets(10,10,10,10));
@@ -358,6 +359,7 @@ public class Main extends Application {
 		CIntro.setMinWidth(50);
 		CIntro.setMinHeight(50);
 		vBox5.getChildren().addAll(
+				goBack,
 				CIntro,
                 new Label("Enter item name"),
                 NewMenuItem = new TextField(),
@@ -396,6 +398,10 @@ public class Main extends Application {
             		new Label("not number"));
         });
         
+        goBack.setOnAction(event ->
+        {
+        	switchScenes(scene3);
+        });
         
 		return scene5;
 	}
