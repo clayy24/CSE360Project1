@@ -284,6 +284,8 @@ public class Main extends Application {
     	GridPane gridpane = new GridPane();
     	goBack = new Button("Return");
     	Label label = new Label("test");
+    	Label search = new Label("Search: ");
+    	TextField searchField = new TextField();
     	
     	/*
     	vBox4.setSpacing(8);
@@ -294,7 +296,8 @@ public class Main extends Application {
     	
     	gridpane = Displayed("menu.txt");
     	gridpane.add(goBack, 0, 0);
-    	
+    	gridpane.add(search, 1, 0, 1, 1);
+    	gridpane.add(searchField, 2, 0, 2, 1);
     	
     	menuScene = new Scene(gridpane, 500,500);
     	
@@ -303,7 +306,79 @@ public class Main extends Application {
         	switchScenes(scene3);
         });
     	
+    	searchField.setOnAction(event ->
+    	{
+    		menuScene = new Scene(displayItem(searchField), 500, 500);   
+    		switchScenes(menuScene);
+    	});
+    	
     	return menuScene;
+    }
+    
+    private GridPane displayItem(TextField searchField)
+    {
+    	String itemName;
+    	String itemPrice;
+    	String allItems = "";
+    	GridPane gridpane = new GridPane();
+    	ImageView imageview = null;
+    	Button addCart = null;
+    	
+    	File menu = new File("menu.txt");
+    	
+        
+    	try {
+			Scanner scanner = new Scanner(menu);
+			
+			while(scanner.hasNextLine())
+			{
+
+				String line1 = scanner.nextLine();
+				
+				Label Item = returnLabel(line1);
+				
+				if(line1.contains(searchField.getText()))
+				{
+					String line2 = scanner.nextLine();
+					String line3 = scanner.nextLine();
+					
+					FileInputStream inputStream = new FileInputStream(line3);
+					Image image = new Image(inputStream);
+					imageview = new ImageView(image);
+					imageview.setFitHeight(100);
+					imageview.setFitWidth(100);
+					imageview.setPreserveRatio(true);
+					addCart = new Button("Add to cart");
+				
+					gridpane.add(Item, 0, 1, 1, 1);			
+					gridpane.add(imageview, 1, 1, 1, 1);
+					gridpane.add(addCart, 3, 1);
+			    	gridpane.add(goBack, 0, 0);
+				
+					addCart.setOnAction(event ->
+					{
+						addItemToCart(line1, line2, line3);
+						cartScene = createCartScene();
+						checkoutScene = createCheckoutScene();
+					});
+					
+					goBack.setOnAction(event ->
+					{
+						menuScene = createMenuScene();
+						switchScenes(menuScene);
+					});
+				}
+			}
+			
+			scanner.close();
+			return gridpane;
+		
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	return null;
     }
     
     private GridPane Displayed(String path) {
