@@ -70,6 +70,8 @@ public class Main extends Application {
 	private VBox vBox5;
 	private Button add;
 	
+	private Scene cartScene;
+	
     Customer customer;
     
 
@@ -85,6 +87,7 @@ public class Main extends Application {
 		scene3 = createScene3();
 		menuScene = createMenuScene();
 		scene5 = createScene5();
+		cartScene = createCartScene();
 		
 		stage.setScene(scene1);
 		stage.show();
@@ -221,6 +224,10 @@ public class Main extends Application {
         	switchScenes(scene5);
         });
         
+        cartButton.setOnAction(event ->
+        {
+        	switchScenes(cartScene);
+        });
     	return scene3;
     }
 
@@ -238,7 +245,7 @@ public class Main extends Application {
         vBox4.getChildren().addAll(goBack, Displayed());
         */
     	
-    	gridpane = Displayed();
+    	gridpane = Displayed("menu.txt");
     	gridpane.add(goBack, 0, 0);
     	
     	
@@ -252,7 +259,7 @@ public class Main extends Application {
     	return menuScene;
     }
     
-    private GridPane Displayed() {
+    private GridPane Displayed(String path) {
 		
     	String itemName;
     	String itemPrice;
@@ -261,7 +268,7 @@ public class Main extends Application {
     	ImageView imageview = null;
     	Button addCart = null;
     	
-    	File menu = new File("menu.txt");
+    	File menu = new File(path);
     	int lines = 0;
     	
 
@@ -389,6 +396,25 @@ public class Main extends Application {
         
         
 		return scene5;
+	}
+	
+	private Scene createCartScene()
+	{
+		GridPane gridpane = new GridPane();
+    	goBack = new Button("Return");
+    	
+    	gridpane = Displayed("cart.txt");
+    	gridpane.add(goBack, 0, 0);
+    	
+    	
+    	cartScene = new Scene(gridpane, 400, 400);
+    	
+    	goBack.setOnAction(event -> {
+        	
+        	switchScenes(scene3);
+        });
+    	
+    	return cartScene;
 	}
     
     private void createMenuItem(TextField newMenuItem, TextField newItemPrice, TextField newImagePath) {
