@@ -1,6 +1,0 @@
-item: item: apple
-price: price: 5
-apple.jpg
-item: item: watermelon
-price: price: 3
-watermelon.jpg

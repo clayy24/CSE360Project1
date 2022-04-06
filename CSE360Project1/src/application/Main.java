@@ -316,6 +316,7 @@ public class Main extends Application {
 				{
 					addItemToCart(line1, line2, line3);
 					cartScene = createCartScene();
+					checkoutScene = createCheckoutScene();
 				});
 			}
 			
@@ -432,6 +433,7 @@ public class Main extends Application {
     	{
     		clearCart();
     		cartScene = createCartScene();
+    		checkoutScene = createCheckoutScene();
     	});
     	
     	checkoutButton.setOnAction(event ->
@@ -449,21 +451,23 @@ public class Main extends Application {
 		VBox vbox = new VBox();
 		HBox hboxFirstname = new HBox();
 		HBox hboxLastname = new HBox();
+		HBox hboxCardnum = new HBox();
 		
 		gridpane = Displayed("cart.txt");
 		gridpane.getChildren().removeIf(node -> GridPane.getColumnIndex(node) == 3);
 		
 		Label firstname = new Label("Enter first name: ");
 		Label lastname = new Label("Enter last name: ");
-		Label cardnum = new Label("Enter card number");
+		Label cardnum = new Label("Enter card number: ");
 		TextField newfirstname = new TextField();
 		TextField newlastname = new TextField();
 		TextField newcardnum = new TextField();
 		
 		hboxFirstname.getChildren().addAll(firstname, newfirstname);
 		hboxLastname.getChildren().addAll(lastname, newlastname);
+		hboxCardnum.getChildren().addAll(cardnum, newcardnum);
 		
-		vbox.getChildren().addAll(goBack, gridpane, hboxFirstname, hboxLastname);
+		vbox.getChildren().addAll(goBack, gridpane, hboxFirstname, hboxLastname, hboxCardnum);
 		
 		checkoutScene = new Scene(vbox, 400, 400);
 		
