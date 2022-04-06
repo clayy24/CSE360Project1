@@ -233,11 +233,12 @@ public class Main extends Application {
     	cartButton = new Button("Cart");
     	addItems = new Button("Add Menu Items");
     	Button clearMenuItems = new Button("Remove Menu Items");
+    	Button signout = new Button("Sign out");
     	
-    	hBox3.setSpacing(50);
+    	hBox3.setSpacing(15);
         hBox3.setPadding(new Insets(10,10,10,10));
         hBox3.setStyle("-fx-background-color: red");
-        hBox3.getChildren().addAll(menuButton, cartButton, addItems, clearMenuItems);
+        hBox3.getChildren().addAll(menuButton, cartButton, addItems, clearMenuItems, signout);
         //hBox3.getChildren().addAll(menuButton, cartButton);
         scene3 = new Scene(hBox3, 500,500);
         
@@ -260,6 +261,14 @@ public class Main extends Application {
     	{
     		clearMenu();
     		menuScene = createMenuScene();
+    	});
+    	
+    	signout.setOnAction(event ->
+    	{
+    		clearCart();
+    		cartScene = createCartScene();
+    		checkoutScene = createCheckoutScene();
+    		switchScenes(scene1);
     	});
     	
     	return scene3;
@@ -465,7 +474,6 @@ public class Main extends Application {
     	clearCartButton.setOnAction(event ->
     	{
     		clearCart();
-    		total = 0;
     		cartScene = createCartScene();
     		checkoutScene = createCheckoutScene();
     		switchScenes(cartScene);
@@ -572,6 +580,8 @@ public class Main extends Application {
     private void clearCart()
     {
     	File cart = new File("cart.txt");
+    	
+    	total = 0;
     	
     	try {
     		FileWriter writer = new FileWriter(cart);
