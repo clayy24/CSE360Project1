@@ -74,6 +74,11 @@ public class Main extends Application {
 	private Scene checkoutScene;
 	private Scene orderedScene;
 	
+	private String firstname;
+	private String lastname;
+	private String cardnum;
+	private String email;
+	
     Customer customer;
     
 
@@ -456,6 +461,7 @@ public class Main extends Application {
     	
     	checkoutButton.setOnAction(event ->
     	{
+    		checkoutScene = createCheckoutScene();
     		switchScenes(checkoutScene);
     	});
     	
@@ -468,25 +474,17 @@ public class Main extends Application {
 		Button goBack = new Button("Go back");
 		Button placeOrder = new Button("Continue Checkout");
 		VBox vbox = new VBox();
-		HBox hboxFirstname = new HBox();
-		HBox hboxLastname = new HBox();
-		HBox hboxCardnum = new HBox();
 		
 		gridpane = Displayed("cart.txt");
 		gridpane.getChildren().removeIf(node -> GridPane.getColumnIndex(node) == 3);
 		
-		Label firstname = new Label("Enter first name: ");
-		Label lastname = new Label("Enter last name: ");
-		Label cardnum = new Label("Enter card number: ");
-		TextField newfirstname = new TextField();
-		TextField newlastname = new TextField();
-		TextField newcardnum = new TextField();
+		Label firstname = new Label("First name: " + this.firstname);
+		Label lastname = new Label("Last name: " + this.lastname);
+		Label cardnum = new Label("Card number: " + this.cardnum);
+		Label email = new Label("Email: " + this.email);
 		
-		hboxFirstname.getChildren().addAll(firstname, newfirstname);
-		hboxLastname.getChildren().addAll(lastname, newlastname);
-		hboxCardnum.getChildren().addAll(cardnum, newcardnum);
 		
-		vbox.getChildren().addAll(goBack, gridpane, hboxFirstname, hboxLastname, hboxCardnum, placeOrder);
+		vbox.getChildren().addAll(goBack, gridpane, firstname, lastname, cardnum, email, placeOrder);
 		
 		checkoutScene = new Scene(vbox, 400, 500);
 		
@@ -616,10 +614,10 @@ public class Main extends Application {
     	
     	String username = NewUserName.getText();
     	String password = NewPassword.getText();
-    	String firstname = NewFirstName.getText();
-    	String lastname = NewLastName.getText();
-    	String cardnum = NewCardNum.getText();
-    	String email = NewEmail.getText();
+    	this.firstname = NewFirstName.getText();
+    	this.lastname = NewLastName.getText();
+    	this.cardnum = NewCardNum.getText();
+    	this.email = NewEmail.getText();
     	
     	customer = new Customer(username, password);
     	
@@ -680,6 +678,10 @@ public class Main extends Application {
 					{
 						System.out.println("login successful");
 						loginSuccessful = true;
+						this.firstname = scanner.nextLine();
+						this.lastname = scanner.nextLine();
+						this.cardnum = scanner.nextLine();
+						this.email = scanner.nextLine();
 					}
 					else
 					{
