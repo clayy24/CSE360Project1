@@ -93,6 +93,8 @@ public class Main extends Application {
 		stage = primaryStage;
 		stage.setTitle("Login screen that switches to create acoount");
 		
+		clearCart();
+		
 		scene1 = createScene1();
 		scene2 = createScene2();
 		scene3 = createScene3();
@@ -541,6 +543,7 @@ public class Main extends Application {
 		rtrn.setOnAction(event ->
 		{
 			clearCart();
+			cartScene = createCartScene();
 			switchScenes(scene3);
 		});
 		
