@@ -1,0 +1,12 @@
+item: item: watermelon
+price: 13.69
+watermelon.jpg
+item: item: watermelon
+price: 13.69
+watermelon.jpg
+item: item: watermelon
+price: 13.69
+watermelon.jpg
+item: item: cucumber
+price: 11.05
+cucumber.jpg

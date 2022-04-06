@@ -895,6 +895,7 @@ public class Main extends Application {
     
     private double applyDiscount()
     {
+    	boolean contains = false;
     	File discountFile = new File("discount.txt");
     	try {
 			Scanner scanner = new Scanner(discountFile);
@@ -909,7 +910,12 @@ public class Main extends Application {
 				{
 					discount = Double.parseDouble(scanner.nextLine());
 					System.out.println(discount);
+					contains = true;
 				}
+			}
+			if(!contains)
+			{
+				discount = 1;
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
