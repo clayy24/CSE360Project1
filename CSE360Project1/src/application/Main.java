@@ -59,7 +59,7 @@ public class Main extends Application {
 	private Button addItems;
 	
 	//scene4
-	private Scene scene4;
+	private Scene menuScene;
 	private VBox vBox4;
 	private Button goBack;
 	
@@ -83,7 +83,7 @@ public class Main extends Application {
 		scene1 = createScene1();
 		scene2 = createScene2();
 		scene3 = createScene3();
-		scene4 = createScene4();
+		menuScene = createMenuScene();
 		scene5 = createScene5();
 		
 		stage.setScene(scene1);
@@ -213,7 +213,7 @@ public class Main extends Application {
         
         menuButton.setOnAction(event -> {
         	
-        	switchScenes(scene4);
+        	switchScenes(menuScene);
         });
         
         addItems.setOnAction(event -> {
@@ -224,13 +224,12 @@ public class Main extends Application {
     	return scene3;
     }
 
-    private Scene createScene4()
+    private Scene createMenuScene()
     {
     	VBox vBox4 = new VBox();
     	GridPane gridpane = new GridPane();
     	goBack = new Button("Return");
     	Label label = new Label("test");
-    	Button addCart;
     	
     	/*
     	vBox4.setSpacing(8);
@@ -243,14 +242,14 @@ public class Main extends Application {
     	gridpane.add(goBack, 0, 0);
     	
     	
-    	scene4 = new Scene(gridpane, 400, 400);
+    	menuScene = new Scene(gridpane, 400, 400);
     	
     	goBack.setOnAction(event -> {
         	
         	switchScenes(scene3);
         });
     	
-    	return scene4;
+    	return menuScene;
     }
     
     private GridPane Displayed() {
@@ -306,7 +305,7 @@ public class Main extends Application {
 				
 				addCart.setOnAction(event ->
 				{
-					System.out.println("it works");
+					addItemToCart(line1, line2, line3);
 				});
 			}
 			
@@ -437,6 +436,40 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
     	
+    }
+    
+    private void addItemToCart(String newMenuItem, String newItemPrice, String newImagePath)
+    {
+    	File cart = new File("cart.txt");
+    	FileWriter writer = null;
+		try {
+			writer = new FileWriter(cart, true);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	
+    	String Item = newMenuItem;
+    	String Price = newItemPrice;
+    	String imagepath = newImagePath;
+    	
+    	customer = new Customer(Item, Price);
+    	
+    	try {
+			writer.append("item: " + Item + "\n");
+			writer.append("price: " + Price + "\n");
+			writer.append(imagepath + "\n");
+			writer.close();
+			System.out.println("successfully wrote to file");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	
+    	System.out.println("item: " + Item);
+    	System.out.println("price: " + Price);
     }
     
 	private void createAccount(TextField NewUserName, PasswordField NewPassword)
