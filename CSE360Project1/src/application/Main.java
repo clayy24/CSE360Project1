@@ -80,6 +80,8 @@ public class Main extends Application {
 	private String email;
 	
 	private double total;
+	private int customersAhead = -1;
+	private int minutes = 0;
 	
     Customer customer;
     
@@ -516,6 +518,8 @@ public class Main extends Application {
 		
 		placeOrder.setOnAction(event ->
 		{
+			customersAhead++;
+			orderedScene = createOrderedScene();
 			switchScenes(orderedScene);
 		});
 		
@@ -524,6 +528,21 @@ public class Main extends Application {
 	
 	private Scene createOrderedScene()
 	{
+		VBox vbox = new VBox();
+		minutes += (int) (total * (.89));
+		Label customersahead = new Label("There are " + customersAhead + " orders ahead of you.");
+		Label time = new Label("Your order will be completed in " + minutes + " minutes");
+		Button rtrn = new Button("Return");
+		
+		vbox.getChildren().addAll(customersahead, time, rtrn);
+		
+		orderedScene = new Scene(vbox, 500, 500);
+		
+		rtrn.setOnAction(event ->
+		{
+			clearCart();
+			switchScenes(scene3);
+		});
 		
 		return orderedScene;
 	}
