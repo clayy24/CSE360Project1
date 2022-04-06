@@ -72,6 +72,7 @@ public class Main extends Application {
 	
 	private Scene cartScene;
 	private Scene checkoutScene;
+	private Scene orderedScene;
 	
     Customer customer;
     
@@ -90,6 +91,7 @@ public class Main extends Application {
 		scene5 = createScene5();
 		cartScene = createCartScene();
 		checkoutScene = createCheckoutScene();
+		orderedScene = createOrderedScene();
 		
 		stage.setScene(scene1);
 		stage.show();
@@ -99,7 +101,6 @@ public class Main extends Application {
         primaryStage.setTitle("Login Test");
         primaryStage.setAlwaysOnTop(true);
 		
-
         
     }
     //login screen
@@ -115,7 +116,7 @@ public class Main extends Application {
         
         TextField UserName;
 		PasswordField Password;
-        scene1 = new Scene(vBox1, 400, 400);
+        scene1 = new Scene(vBox1, 400, 500);
         
 		
 		
@@ -171,10 +172,18 @@ public class Main extends Application {
     	vBox2.setSpacing(8);
         vBox2.setPadding(new Insets(10,10,10,10));
         vBox2.setStyle("-fx-background-color: grey");
-        scene2 = new Scene(vBox2, 400, 400);
+        scene2 = new Scene(vBox2, 400, 500);
     	
         TextField NewUserName;
 		PasswordField NewPassword;
+		Label firstname = new Label("Enter first name: ");
+		Label lastname = new Label("Enter last name: ");
+		Label cardnum = new Label("Enter card number: ");
+		Label email = new Label("Enter your email");
+		TextField newfirstname = new TextField();
+		TextField newlastname = new TextField();
+		TextField newcardnum = new TextField();
+		TextField newemail = new TextField();
 		
 		Label CIntro;
 		CIntro = new Label("Let's make and account!");
@@ -187,12 +196,20 @@ public class Main extends Application {
                 NewUserName = new TextField(),
                 new Label("Enter a Password"),
                 NewPassword = new PasswordField(),
+                firstname,
+                newfirstname,
+                lastname,
+                newlastname,
+                cardnum,
+                newcardnum,
+                email,
+                newemail,
                 button2 = new Button("Create account"));
 			    
        
 	       //label called status
         button2.setOnAction(event -> {
-            createAccount(NewUserName, NewPassword);
+            createAccount(NewUserName, NewPassword, newfirstname, newlastname, newcardnum, newemail);
 			switchScenes(scene1);
             vBox2.getChildren().add(
             		new Label("Yay"));
@@ -214,7 +231,7 @@ public class Main extends Application {
         hBox3.setStyle("-fx-background-color: red");
         hBox3.getChildren().addAll(menuButton, cartButton, addItems);
         //hBox3.getChildren().addAll(menuButton, cartButton);
-        scene3 = new Scene(hBox3, 400, 400);
+        scene3 = new Scene(hBox3, 400, 500);
         
         menuButton.setOnAction(event -> {
         	
@@ -251,7 +268,7 @@ public class Main extends Application {
     	gridpane.add(goBack, 0, 0);
     	
     	
-    	menuScene = new Scene(gridpane, 400, 400);
+    	menuScene = new Scene(gridpane, 400, 500);
     	
     	goBack.setOnAction(event -> {
         	
@@ -347,7 +364,7 @@ public class Main extends Application {
     	vBox5.setSpacing(8);
         vBox5.setPadding(new Insets(10,10,10,10));
         vBox5.setStyle("-fx-background-color: grey");
-        scene5 = new Scene(vBox5, 400, 400);
+        scene5 = new Scene(vBox5, 400, 500);
     	
         TextField NewMenuItem;
 		TextField NewItemPrice;
@@ -422,7 +439,7 @@ public class Main extends Application {
     	
     	gridpane.getChildren().removeIf(node -> GridPane.getColumnIndex(node) == 3);
     	
-    	cartScene = new Scene(gridpane, 400, 400);
+    	cartScene = new Scene(gridpane, 400, 500);
     	
     	goBack.setOnAction(event -> {
         	
@@ -449,6 +466,7 @@ public class Main extends Application {
 	{
 		GridPane gridpane = new GridPane();
 		Button goBack = new Button("Go back");
+		Button placeOrder = new Button("Continue Checkout");
 		VBox vbox = new VBox();
 		HBox hboxFirstname = new HBox();
 		HBox hboxLastname = new HBox();
@@ -468,17 +486,29 @@ public class Main extends Application {
 		hboxLastname.getChildren().addAll(lastname, newlastname);
 		hboxCardnum.getChildren().addAll(cardnum, newcardnum);
 		
-		vbox.getChildren().addAll(goBack, gridpane, hboxFirstname, hboxLastname, hboxCardnum);
+		vbox.getChildren().addAll(goBack, gridpane, hboxFirstname, hboxLastname, hboxCardnum, placeOrder);
 		
-		checkoutScene = new Scene(vbox, 400, 400);
+		checkoutScene = new Scene(vbox, 400, 500);
 		
 		goBack.setOnAction(event ->
 		{
 			switchScenes(cartScene);
 		});
 		
+		placeOrder.setOnAction(event ->
+		{
+			switchScenes(orderedScene);
+		});
+		
 		return checkoutScene;
 	}
+	
+	private Scene createOrderedScene()
+	{
+		
+		return orderedScene;
+	}
+	
     
     private void createMenuItem(TextField newMenuItem, TextField newItemPrice, TextField newImagePath) {
     	File menu = new File("menu.txt");
@@ -572,7 +602,7 @@ public class Main extends Application {
     	System.out.println("price: " + Price);
     }
     
-	private void createAccount(TextField NewUserName, PasswordField NewPassword)
+	private void createAccount(TextField NewUserName, PasswordField NewPassword, TextField NewFirstName, TextField NewLastName, TextField NewCardNum, TextField NewEmail)
     {
     	File accounts = new File("accounts.txt");
     	FileWriter writer = null;
@@ -586,12 +616,20 @@ public class Main extends Application {
     	
     	String username = NewUserName.getText();
     	String password = NewPassword.getText();
+    	String firstname = NewFirstName.getText();
+    	String lastname = NewLastName.getText();
+    	String cardnum = NewCardNum.getText();
+    	String email = NewEmail.getText();
     	
     	customer = new Customer(username, password);
     	
     	try {
 			writer.append("username: " + username + "\n");
-			writer.append("password: " + password + "\n");			
+			writer.append("password: " + password + "\n");
+			writer.append(firstname + "\n");
+			writer.append(lastname + "\n");
+			writer.append(cardnum + "\n");
+			writer.append(email + "\n");
 			writer.close();
 			System.out.println("successfully wrote to file");
 		} catch (IOException e) {

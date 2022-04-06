@@ -1,8 +1,12 @@
-username: michael cox
-password: 1234
-username: Tyler
-password: Allison
 username: admin
 password: 1234
-username: f
-password: f
+Clay
+Castronovo
+1337
+clay7a@gmail.com
+username: test
+password: test
+first
+last
+number
+email
