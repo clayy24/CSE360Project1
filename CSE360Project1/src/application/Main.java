@@ -79,6 +79,8 @@ public class Main extends Application {
 	private String cardnum;
 	private String email;
 	
+	private double total;
+	
     Customer customer;
     
 
@@ -121,7 +123,7 @@ public class Main extends Application {
         
         TextField UserName;
 		PasswordField Password;
-        scene1 = new Scene(vBox1, 400, 500);
+        scene1 = new Scene(vBox1, 500,500);
         
 		
 		
@@ -177,7 +179,7 @@ public class Main extends Application {
     	vBox2.setSpacing(8);
         vBox2.setPadding(new Insets(10,10,10,10));
         vBox2.setStyle("-fx-background-color: grey");
-        scene2 = new Scene(vBox2, 400, 500);
+        scene2 = new Scene(vBox2, 500,500);
     	
         TextField NewUserName;
 		PasswordField NewPassword;
@@ -229,14 +231,15 @@ public class Main extends Application {
     	HBox hBox3 = new HBox();
     	menuButton = new Button("Menu");
     	cartButton = new Button("Cart");
-    	addItems = new Button("add Menu Items");
+    	addItems = new Button("Add Menu Items");
+    	Button clearMenuItems = new Button("Remove Menu Items");
     	
     	hBox3.setSpacing(50);
         hBox3.setPadding(new Insets(10,10,10,10));
         hBox3.setStyle("-fx-background-color: red");
-        hBox3.getChildren().addAll(menuButton, cartButton, addItems);
+        hBox3.getChildren().addAll(menuButton, cartButton, addItems, clearMenuItems);
         //hBox3.getChildren().addAll(menuButton, cartButton);
-        scene3 = new Scene(hBox3, 400, 500);
+        scene3 = new Scene(hBox3, 500,500);
         
         menuButton.setOnAction(event -> {
         	
@@ -252,6 +255,13 @@ public class Main extends Application {
         {
         	switchScenes(cartScene);
         });
+    	
+    	clearMenuItems.setOnAction(event -> 
+    	{
+    		clearMenu();
+    		menuScene = createMenuScene();
+    	});
+    	
     	return scene3;
     }
 
@@ -273,7 +283,7 @@ public class Main extends Application {
     	gridpane.add(goBack, 0, 0);
     	
     	
-    	menuScene = new Scene(gridpane, 400, 500);
+    	menuScene = new Scene(gridpane, 500,500);
     	
     	goBack.setOnAction(event -> {
         	
@@ -369,7 +379,7 @@ public class Main extends Application {
     	vBox5.setSpacing(8);
         vBox5.setPadding(new Insets(10,10,10,10));
         vBox5.setStyle("-fx-background-color: grey");
-        scene5 = new Scene(vBox5, 400, 500);
+        scene5 = new Scene(vBox5, 500,500);
     	
         TextField NewMenuItem;
 		TextField NewItemPrice;
@@ -416,7 +426,8 @@ public class Main extends Application {
     		*/
         	
         		createMenuItem(NewMenuItem, NewItemPrice, newImagePath);
-				switchScenes(scene3);
+				menuScene = createMenuScene();
+        		switchScenes(scene3);
         	
             vBox5.getChildren().add(
             		new Label("not number"));
@@ -444,7 +455,7 @@ public class Main extends Application {
     	
     	gridpane.getChildren().removeIf(node -> GridPane.getColumnIndex(node) == 3);
     	
-    	cartScene = new Scene(gridpane, 400, 500);
+    	cartScene = new Scene(gridpane, 500,500);
     	
     	goBack.setOnAction(event -> {
         	
@@ -454,6 +465,7 @@ public class Main extends Application {
     	clearCartButton.setOnAction(event ->
     	{
     		clearCart();
+    		total = 0;
     		cartScene = createCartScene();
     		checkoutScene = createCheckoutScene();
     		switchScenes(cartScene);
@@ -478,15 +490,16 @@ public class Main extends Application {
 		gridpane = Displayed("cart.txt");
 		gridpane.getChildren().removeIf(node -> GridPane.getColumnIndex(node) == 3);
 		
+		Label totalprice = new Label("Total Price: " + total);
 		Label firstname = new Label("First name: " + this.firstname);
 		Label lastname = new Label("Last name: " + this.lastname);
 		Label cardnum = new Label("Card number: " + this.cardnum);
 		Label email = new Label("Email: " + this.email);
 		
 		
-		vbox.getChildren().addAll(goBack, gridpane, firstname, lastname, cardnum, email, placeOrder);
+		vbox.getChildren().addAll(goBack, gridpane, totalprice, firstname, lastname, cardnum, email, placeOrder);
 		
-		checkoutScene = new Scene(vbox, 400, 500);
+		checkoutScene = new Scene(vbox, 500,500);
 		
 		goBack.setOnAction(event ->
 		{
@@ -523,11 +536,12 @@ public class Main extends Application {
     	String Price = newItemPrice.getText();
     	String imagepath = newImagePath.getText();
     	
+    	
     	customer = new Customer(Item, Price);
     	
     	try {
 			writer.append("item: " + Item + "\n");
-			writer.append("price: " + Price + "\n");
+			writer.append(Price + "\n");
 			writer.append(imagepath + "\n");
 			writer.close();
 			System.out.println("successfully wrote to file");
@@ -576,11 +590,12 @@ public class Main extends Application {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	
-    	
+
     	String Item = newMenuItem;
     	String Price = newItemPrice;
     	String imagepath = newImagePath;
+    	
+    	double price = Double.parseDouble(Price);
     	
     	customer = new Customer(Item, Price);
     	
@@ -595,6 +610,7 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
     	
+    	total += price;
     	
     	System.out.println("item: " + Item);
     	System.out.println("price: " + Price);

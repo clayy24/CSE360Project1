@@ -1,9 +1,6 @@
-item: apple
-price: 5
-apple.jpg
 item: watermelon
-price: 3
+13.69
 watermelon.jpg
 item: cucumber
-price: 2
+11.05
 cucumber.jpg
