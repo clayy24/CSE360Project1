@@ -1,3 +1,0 @@
-item: item: cucumber
-price: 11.05
-cucumber.jpg

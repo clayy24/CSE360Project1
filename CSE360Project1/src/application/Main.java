@@ -73,6 +73,7 @@ public class Main extends Application {
 	private Scene cartScene;
 	private Scene checkoutScene;
 	private Scene orderedScene;
+	private Scene discountScene;
 	
 	private String firstname;
 	private String lastname;
@@ -98,6 +99,7 @@ public class Main extends Application {
 		stage.setTitle("Login screen that switches to create acoount");
 		
 		clearCart();
+		clearDiscount();
 		
 		scene1 = createScene1();
 		scene2 = createScene2();
@@ -107,6 +109,7 @@ public class Main extends Application {
 		cartScene = createCartScene();
 		checkoutScene = createCheckoutScene();
 		orderedScene = createOrderedScene();
+		discountScene = createDiscountScene();
 		
 		stage.setScene(scene1);
 		stage.show();
@@ -131,7 +134,7 @@ public class Main extends Application {
         
         TextField UserName;
 		PasswordField Password;
-        scene1 = new Scene(vBox1, 500,500);
+        scene1 = new Scene(vBox1, 550,500);
         
 		
 		
@@ -187,7 +190,7 @@ public class Main extends Application {
     	vBox2.setSpacing(8);
         vBox2.setPadding(new Insets(10,10,10,10));
         vBox2.setStyle("-fx-background-color: grey");
-        scene2 = new Scene(vBox2, 500,500);
+        scene2 = new Scene(vBox2, 550,500);
     	
         TextField NewUserName;
 		PasswordField NewPassword;
@@ -242,13 +245,14 @@ public class Main extends Application {
     	addItems = new Button("Add Menu Items");
     	Button clearMenuItems = new Button("Remove Menu Items");
     	Button signout = new Button("Sign out");
+    	Button discountButton = new Button("Create Discount");
     	
-    	hBox3.setSpacing(15);
+    	hBox3.setSpacing(5);
         hBox3.setPadding(new Insets(10,10,10,10));
         hBox3.setStyle("-fx-background-color: red");
-        hBox3.getChildren().addAll(menuButton, cartButton, addItems, clearMenuItems, signout);
+        hBox3.getChildren().addAll(menuButton, cartButton, addItems, clearMenuItems, signout, discountButton);
         //hBox3.getChildren().addAll(menuButton, cartButton);
-        scene3 = new Scene(hBox3, 500,500);
+        scene3 = new Scene(hBox3, 550,500);
         
         menuButton.setOnAction(event -> {
         	
@@ -279,6 +283,12 @@ public class Main extends Application {
     		switchScenes(scene1);
     	});
     	
+    	discountButton.setOnAction(event ->
+    	{
+    		discountScene = createDiscountScene();
+    		switchScenes(discountScene);
+    	});
+    	
     	return scene3;
     }
 
@@ -303,7 +313,7 @@ public class Main extends Application {
     	gridpane.add(search, 1, 0, 1, 1);
     	gridpane.add(searchField, 2, 0, 2, 1);
     	
-    	menuScene = new Scene(gridpane, 500,500);
+    	menuScene = new Scene(gridpane, 550,500);
     	
     	goBack.setOnAction(event -> {
         	
@@ -312,7 +322,7 @@ public class Main extends Application {
     	
     	searchField.setOnAction(event ->
     	{
-    		menuScene = new Scene(displayItem(searchField), 500, 500);   
+    		menuScene = new Scene(displayItem(searchField), 550,500);   
     		switchScenes(menuScene);
     	});
     	
@@ -471,7 +481,7 @@ public class Main extends Application {
     	vBox5.setSpacing(8);
         vBox5.setPadding(new Insets(10,10,10,10));
         vBox5.setStyle("-fx-background-color: grey");
-        scene5 = new Scene(vBox5, 500,500);
+        scene5 = new Scene(vBox5, 550,500);
     	
         TextField NewMenuItem;
 		TextField NewItemPrice;
@@ -547,7 +557,7 @@ public class Main extends Application {
     	
     	gridpane.getChildren().removeIf(node -> GridPane.getColumnIndex(node) == 3);
     	
-    	cartScene = new Scene(gridpane, 500,500);
+    	cartScene = new Scene(gridpane, 550,500);
     	
     	goBack.setOnAction(event -> {
         	
@@ -581,7 +591,9 @@ public class Main extends Application {
 		gridpane = Displayed("cart.txt");
 		gridpane.getChildren().removeIf(node -> GridPane.getColumnIndex(node) == 3);
 		
-		Label totalprice = new Label("Total Price: " + total);
+		double truePrice = total * applyDiscount();
+		
+		Label totalprice = new Label("Total Price: " + total + " times a discount of: " + applyDiscount() + " is: " + truePrice);
 		Label firstname = new Label("First name: " + this.firstname);
 		Label lastname = new Label("Last name: " + this.lastname);
 		Label cardnum = new Label("Card number: " + this.cardnum);
@@ -590,7 +602,7 @@ public class Main extends Application {
 		
 		vbox.getChildren().addAll(goBack, gridpane, totalprice, firstname, lastname, cardnum, email, placeOrder);
 		
-		checkoutScene = new Scene(vbox, 500,500);
+		checkoutScene = new Scene(vbox, 550,500);
 		
 		goBack.setOnAction(event ->
 		{
@@ -617,7 +629,7 @@ public class Main extends Application {
 		
 		vbox.getChildren().addAll(customersahead, time, rtrn);
 		
-		orderedScene = new Scene(vbox, 500, 500);
+		orderedScene = new Scene(vbox, 550,500);
 		
 		rtrn.setOnAction(event ->
 		{
@@ -629,6 +641,39 @@ public class Main extends Application {
 		return orderedScene;
 	}
 	
+	private Scene createDiscountScene()
+	{
+		GridPane gridpane = new GridPane();
+		Button discountButton = new Button("Create Discount");
+		Button goBack = new Button("Go back");
+		Label discountUser = new Label("Enter user to apply to: ");
+		Label discountLabel = new Label("Enter discount amount: ");
+		TextField userField = new TextField();
+		TextField discountField = new TextField();
+		
+		gridpane.add(goBack, 0, 0);
+		gridpane.add(discountUser, 0, 1);
+		gridpane.add(userField, 1, 1);
+		gridpane.add(discountLabel, 0, 2);
+		gridpane.add(discountField, 1, 2);
+		gridpane.add(discountButton, 0, 3);
+		
+		discountScene = new Scene(gridpane, 550,500);
+		
+		discountButton.setOnAction(event ->
+		{
+			createDiscount(userField.getText(), discountField.getText());
+			checkoutScene = createCheckoutScene();
+			switchScenes(scene3);
+		});
+		
+		goBack.setOnAction(event ->
+		{
+			switchScenes(scene3);
+		});
+		
+		return discountScene;
+	}
     
     private void createMenuItem(TextField newMenuItem, TextField newItemPrice, TextField newImagePath) {
     	File menu = new File("menu.txt");
@@ -839,8 +884,8 @@ public class Main extends Application {
     	File discountFile = new File("discount.txt");
     	try {
 			FileWriter writer = new FileWriter(discountFile, true);
-			writer.append(user);
-			writer.append(discount);
+			writer.append(user + "\n");
+			writer.append(discount + "\n");
 			writer.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -858,9 +903,12 @@ public class Main extends Application {
 			{
 				String line = scanner.nextLine();
 				
+				System.out.println(line);
+				System.out.println(currentUser);
 				if(line.contains(currentUser))
 				{
 					discount = Double.parseDouble(scanner.nextLine());
+					System.out.println(discount);
 				}
 			}
 		} catch (FileNotFoundException e) {
@@ -869,6 +917,18 @@ public class Main extends Application {
 		}
     	
     	return discount;
+    }
+    
+    private void clearDiscount()
+    {
+    	File discountFile = new File("discount.txt");
+    	
+    	try {
+			FileWriter writer = new FileWriter(discountFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
 	private void switchScenes(Scene scene) {
