@@ -834,6 +834,20 @@ public class Main extends Application {
     	return false;
     }
     
+    private void createDiscount(String user, String discount)
+    {
+    	File discountFile = new File("discount.txt");
+    	try {
+			FileWriter writer = new FileWriter(discountFile, true);
+			writer.append(user);
+			writer.append(discount);
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
     private double applyDiscount()
     {
     	File discountFile = new File("discount.txt");
