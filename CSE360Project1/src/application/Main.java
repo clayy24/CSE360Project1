@@ -71,6 +71,7 @@ public class Main extends Application {
 	private Button add;
 	
 	private Scene cartScene;
+	private Scene checkoutScene;
 	
     Customer customer;
     
@@ -88,6 +89,7 @@ public class Main extends Application {
 		menuScene = createMenuScene();
 		scene5 = createScene5();
 		cartScene = createCartScene();
+		checkoutScene = createCheckoutScene();
 		
 		stage.setScene(scene1);
 		stage.show();
@@ -403,10 +405,12 @@ public class Main extends Application {
 		GridPane gridpane = new GridPane();
     	goBack = new Button("Return");
     	Button clearCartButton = new Button("Clear Cart");
+    	Button checkoutButton = new Button("Checkout");
     	
     	gridpane = Displayed("cart.txt");
     	gridpane.add(goBack, 0, 0);
     	gridpane.add(clearCartButton, 1, 0);
+    	gridpane.add(checkoutButton, 2, 0);
     	
     	cartScene = new Scene(gridpane, 400, 400);
     	
@@ -420,7 +424,32 @@ public class Main extends Application {
     		clearCart();
     	});
     	
+    	checkoutButton.setOnAction(event ->
+    	{
+    		switchScenes(checkoutScene);
+    	});
+    	
     	return cartScene;
+	}
+	
+	private Scene createCheckoutScene()
+	{
+		VBox vbox = new VBox();
+		HBox hboxFirstname = new HBox();
+		HBox hboxLastname = new HBox();
+		
+		Label firstname = new Label("Enter first name: ");
+		Label lastname = new Label("Enter last name: ");
+		TextField newfirstname = new TextField();
+		TextField newlastname = new TextField();
+		
+		hboxFirstname.getChildren().addAll(firstname, newfirstname);
+		hboxLastname.getChildren().addAll(lastname, newlastname);
+		
+		vbox.getChildren().addAll(hboxFirstname, hboxLastname);
+		
+		checkoutScene = new Scene(vbox, 400, 400);
+		return checkoutScene;
 	}
     
     private void createMenuItem(TextField newMenuItem, TextField newItemPrice, TextField newImagePath) {
