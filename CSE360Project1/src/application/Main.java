@@ -402,10 +402,11 @@ public class Main extends Application {
 	{
 		GridPane gridpane = new GridPane();
     	goBack = new Button("Return");
+    	Button clearCartButton = new Button("Clear Cart");
     	
     	gridpane = Displayed("cart.txt");
     	gridpane.add(goBack, 0, 0);
-    	
+    	gridpane.add(clearCartButton, 1, 0);
     	
     	cartScene = new Scene(gridpane, 400, 400);
     	
@@ -413,6 +414,11 @@ public class Main extends Application {
         	
         	switchScenes(scene3);
         });
+    	
+    	clearCartButton.setOnAction(event ->
+    	{
+    		clearCart();
+    	});
     	
     	return cartScene;
 	}
@@ -462,6 +468,17 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
     	
+    }
+    
+    private void clearCart()
+    {
+    	File cart = new File("cart.txt");
+    	
+    	try {
+    		FileWriter writer = new FileWriter(cart);
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
     }
     
     private void addItemToCart(String newMenuItem, String newItemPrice, String newImagePath)
